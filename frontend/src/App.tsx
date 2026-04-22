@@ -138,7 +138,13 @@ function App() {
             `http://localhost:3000/lists/${selectedList._id}/add-user`,
             { userEmail: inviteEmail },
             { headers }
-        ).then(() => setInviteEmail(""));
+        )
+            .then(() => {
+                setInviteEmail("");
+            })
+            .catch(err => {
+                alert(err.response?.data || "Error");
+            });
     };
 
     // ================= ITEMS =================
