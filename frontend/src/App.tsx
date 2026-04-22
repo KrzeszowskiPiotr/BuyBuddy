@@ -90,10 +90,14 @@ function App() {
         axios.post("http://localhost:3000/lists",
             { name: listName },
             { headers }
-        ).then(() => {
-            setListName("");
-            loadLists();
-        });
+        )
+            .then(() => {
+                setListName("");
+                loadLists();
+            })
+            .catch(err => {
+                alert(err.response?.data);
+            });
     };
 
     const selectList = (list: any) => {
@@ -151,9 +155,14 @@ function App() {
             });
         });
 
+        socket.on("delete-item", (itemId) => {
+            setItems(prev => prev.filter(i => i._id !== itemId));
+        });
+
         return () => {
             socket.off("new-item");
             socket.off("new-list");
+            socket.off("delete-item");
         };
     }, []);
 
@@ -248,6 +257,7 @@ function App() {
                     <div className="panel-form">
                         <input
                             placeholder="New list"
+                            value={listName}
                             onChange={e => setListName(e.target.value)}
                         />
 

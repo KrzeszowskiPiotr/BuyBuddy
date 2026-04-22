@@ -77,8 +77,23 @@ app.get("/lists", authMiddleware, async (req: any, res) => {
 });
 
 app.post("/lists", authMiddleware, async (req: any, res) => {
+    const name = req.body.name?.trim();
+
+    if (!name) {
+        return res.status(400).send("List name is required");
+    }
+
+    const exists = await List.findOne({
+        name,
+        members: req.userId
+    });
+
+    if (exists) {
+        return res.status(400).send("List with the same name already exists");
+    }
+
     const list = await List.create({
-        name: req.body.name,
+        name,
         members: [req.userId]
     });
 
@@ -128,7 +143,12 @@ app.post("/items", authMiddleware, async (req, res) => {
 });
 
 app.delete("/items/:id", authMiddleware, async (req, res) => {
-    await Item.findByIdAndDelete(req.params.id);
+    const item = await Item.findByIdAndDelete(req.params.id);
+
+    if (item?.listId) {
+        io.to(item.listId.toString()).emit("delete-item", item._id);
+    }
+
     res.sendStatus(200);
 });
 
