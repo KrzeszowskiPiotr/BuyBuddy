@@ -6,7 +6,7 @@ $accent: #7c5cff;
 
 body {
   margin: 0;
-  font-family: Arial;
+  font-family: 'Arial', sans-serif;
   background: $bg;
   color: $text;
 }
@@ -81,15 +81,25 @@ button.secondary {
 }
 
 /* ================= HEADER ================= */
+.logo-box{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .logo-header {
-  text-align: center;
+  width: auto;
   font-size: 32px;
   margin-top: 10px;
   font-weight: bold;
+
+  background: linear-gradient(90deg, $accent, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* 🔥 FIX TOPBAR */
+/* TOPBAR */
 .topbar {
   display: flex;
   justify-content: space-between; /* LEFT + RIGHT */
@@ -146,25 +156,29 @@ button.secondary {
   background: rgba(124,92,255,0.25);
 }
 
-/* ================= FIX LIST SPACING ================= */
+/* ================= PANEL FORMS ================= */
+.panel-form{
+  display: flex;
+  justify-content: space-between;
+}
 
-.panel.left input {
+.panel-form input {
+  margin-bottom: 12px;
+  margin-right: 10px;
+  width: 100%;
+}
+
+.panel-form button {
   margin-bottom: 12px;
 }
 
-.panel.left button {
-  margin-bottom: 10px;
-}
-
-/* ================= FIX: POPRAWNE UKRYWANIE ================= */
-/* ważne: NIE display:none globalnie, tylko bez klasy */
+/* ================= DISPLAYING ================= */
 
 .panel.center,
 .panel.right {
   display: none;
 }
 
-/* pokazujemy dopiero gdy body ma klasę */
 body.list-selected .panel.center,
 body.list-selected .panel.right {
   display: block;

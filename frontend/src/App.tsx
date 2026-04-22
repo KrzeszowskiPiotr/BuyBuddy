@@ -47,7 +47,7 @@ function App() {
             password
         })
             .then(() => {
-                setMessage("Account created");
+                alert("Account created");
                 setView("home");
             })
             .catch(err => setMessage(err.response?.data));
@@ -142,7 +142,6 @@ function App() {
             setItems(prev => [...prev, item]);
         });
 
-        // 🔥 DODANE (KLUCZ DO TWOJEGO PROBLEMU)
         socket.on("new-list", (list) => {
             setLists(prev => {
                 const exists = prev.find(l => l._id === list._id);
@@ -173,7 +172,6 @@ function App() {
                     <button className="secondary" onClick={() => setView("register")}>Register</button>
                 </div>
 
-                <p>{message}</p>
             </div>
         );
     }
@@ -200,7 +198,7 @@ function App() {
                 <h1 className="logo">BuyBuddy</h1>
 
                 <input placeholder="Name" onChange={e => setName(e.target.value)} />
-                <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
+                <input placeholder="E-mail" onChange={e => setEmail(e.target.value)} />
                 <input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)} />
 
                 <button onClick={register}>Create</button>
@@ -213,9 +211,9 @@ function App() {
 
     return (
         <div className="app">
-
-            <h1 className="logo-header">BuyBuddy</h1>
-
+            <div className="logo-box">
+                <h1 className="logo-header">BuyBuddy</h1>
+            </div>
             <div className="topbar">
                 <div className="topbar-left">
                     Logged as <b>{user?.name}</b>
@@ -228,13 +226,15 @@ function App() {
 
                 <div className="panel left">
                     <h3>Lists</h3>
+                    <div className="panel-form">
+                        <input
+                            placeholder="New list"
+                            onChange={e => setListName(e.target.value)}
+                        />
 
-                    <input
-                        placeholder="new list"
-                        onChange={e => setListName(e.target.value)}
-                    />
+                        <button onClick={createList}>Create</button>
+                    </div>
 
-                    <button onClick={createList}>Create</button>
 
                     {lists.map(l => (
                         <div
@@ -261,13 +261,15 @@ function App() {
                         <>
                             <h3>Items</h3>
 
-                            <input
-                                placeholder="new item"
-                                value={itemName}
-                                onChange={e => setItemName(e.target.value)}
-                            />
+                            <div className="panel-form">
+                                <input
+                                    placeholder="New item"
+                                    value={itemName}
+                                    onChange={e => setItemName(e.target.value)}
+                                />
 
-                            <button onClick={addItem}>Add</button>
+                                <button onClick={addItem}>Add</button>
+                            </div>
 
                             {items.map(i => (
                                 <div key={i._id} className="item">
@@ -286,13 +288,16 @@ function App() {
                         <>
                             <h3>Invite user</h3>
 
-                            <input
-                                placeholder="email"
-                                value={inviteEmail}
-                                onChange={e => setInviteEmail(e.target.value)}
-                            />
+                            <div className="panel-form">
+                                <input
+                                    placeholder="E-mail"
+                                    value={inviteEmail}
+                                    onChange={e => setInviteEmail(e.target.value)}
+                                />
 
-                            <button onClick={addUserToList}>Invite</button>
+                                <button onClick={addUserToList}>Invite</button>
+                            </div>
+
                         </>
                     )}
                 </div>
