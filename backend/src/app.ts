@@ -61,22 +61,25 @@ app.post("/auth/login", async (req, res) => {
         return res.status(400).send("Wrong password");
 
     res.json({
-        token: "fake-jwt",
+        token: user._id.toString(),
         user
     });
 });
 
 // ================= LISTS =================
 
-app.get("/lists", authMiddleware, async (req, res) => {
-    const lists = await List.find();
+app.get("/lists", authMiddleware, async (req: any, res) => {
+    const lists = await List.find({
+        members: req.userId
+    });
+
     res.json(lists);
 });
 
-app.post("/lists", authMiddleware, async (req, res) => {
+app.post("/lists", authMiddleware, async (req: any, res) => {
     const list = await List.create({
         name: req.body.name,
-        members: []
+        members: [req.userId]
     });
 
     res.json(list);

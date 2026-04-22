@@ -26,7 +26,6 @@ function App() {
     const [itemName, setItemName] = useState("");
     const [inviteEmail, setInviteEmail] = useState("");
 
-    // ✅ STABILNA WERSJA (BEZ BEARER)
     const headers = {
         Authorization: token
     };
@@ -60,7 +59,7 @@ function App() {
             password
         })
             .then(res => {
-                setToken(res.data.token);
+                setToken(res.data.user._id);
                 setUser(res.data.user);
 
                 localStorage.setItem("token", res.data.token);
