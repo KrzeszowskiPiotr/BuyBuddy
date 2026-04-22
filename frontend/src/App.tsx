@@ -137,13 +137,24 @@ function App() {
 
     // ================= SOCKET =================
 
-    // @ts-ignore
     useEffect(() => {
         socket.on("new-item", (item) => {
             setItems(prev => [...prev, item]);
         });
 
-        return () => socket.off("new-item");
+        // 🔥 DODANE (KLUCZ DO TWOJEGO PROBLEMU)
+        socket.on("new-list", (list) => {
+            setLists(prev => {
+                const exists = prev.find(l => l._id === list._id);
+                if (exists) return prev;
+                return [...prev, list];
+            });
+        });
+
+        return () => {
+            socket.off("new-item");
+            socket.off("new-list");
+        };
     }, []);
 
     useEffect(() => {
