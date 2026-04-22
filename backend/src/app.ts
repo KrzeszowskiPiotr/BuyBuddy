@@ -71,7 +71,7 @@ app.post("/auth/login", async (req, res) => {
 app.get("/lists", authMiddleware, async (req: any, res) => {
     const lists = await List.find({
         members: req.userId
-    });
+    }).populate("owner", "name");
 
     res.json(lists);
 });
@@ -94,7 +94,8 @@ app.post("/lists", authMiddleware, async (req: any, res) => {
 
     const list = await List.create({
         name,
-        members: [req.userId]
+        members: [req.userId],
+        owner: req.userId
     });
 
     res.json(list);
@@ -117,7 +118,7 @@ app.post("/lists/:id/add-user", authMiddleware, async (req, res) => {
         req.params.id,
         { $addToSet: { members: user._id } },
         { new: true }
-    );
+    ).populate("owner", "name");
 
     if (!list) return res.status(404).send("List not found");
 

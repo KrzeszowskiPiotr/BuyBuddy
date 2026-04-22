@@ -271,7 +271,13 @@ function App() {
                             className={`item ${selectedList?._id === l._id ? "active" : ""}`}
                             onClick={() => selectList(l)}
                         >
-                            <span>{l.name}</span>
+                            <div  className="list-name">
+                                <span>{l.name}</span>
+
+                                {l.owner?._id !== user?._id && (
+                                    <small>by {l.owner?.name}</small>
+                                )}
+                            </div>
 
                             <button
                                 onClick={(e) => {

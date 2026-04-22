@@ -152,6 +152,11 @@ button.secondary {
   }
 }
 
+.list-name{
+  display: flex;
+  flex-direction: column;
+}
+
 .active {
   background: rgba(124,92,255,0.25);
 }
