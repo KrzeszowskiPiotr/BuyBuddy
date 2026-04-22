@@ -1,27 +1,138 @@
 import express from "express";
-import mongoose from "mongoose";
 import cors from "cors";
+import mongoose from "mongoose";
+import http from "http";
+import { Server } from "socket.io";
+
+import User from "./models/User";
+import List from "./models/List";
+import Item from "./models/Item";
+import { authMiddleware } from "./middleware/auth";
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("mongodb://mongo:27017/shop");
+const server = http.createServer(app);
 
-let items: string[] = [];
-
-app.get("/", (req, res) => {
-    res.send("Backend działa");
+const io = new Server(server, {
+    cors: { origin: "*" }
 });
 
-app.get("/items", (req, res) => {
+app.get("/", (req, res) => {
+    res.send("API works");
+});
+
+// ================= SOCKET =================
+
+io.on("connection", (socket) => {
+    socket.on("join-user", (userId) => {
+        socket.join(userId);
+    });
+
+    socket.on("join-list", (listId) => {
+        socket.join(listId);
+    });
+});
+
+// ================= AUTH =================
+
+app.post("/auth/register", async (req, res) => {
+    const { name, email, password } = req.body;
+
+    const existsEmail = await User.findOne({ email });
+    if (existsEmail) return res.status(400).send("User already exists");
+
+    const existsName = await User.findOne({ name });
+    if (existsName) return res.status(400).send("Username already taken");
+
+    const user = await User.create({ name, email, password });
+
+    res.json(user);
+});
+
+app.post("/auth/login", async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).send("User not found");
+
+    if (user.password !== password)
+        return res.status(400).send("Wrong password");
+
+    res.json({
+        token: "fake-jwt",
+        user
+    });
+});
+
+// ================= LISTS =================
+
+app.get("/lists", authMiddleware, async (req, res) => {
+    const lists = await List.find();
+    res.json(lists);
+});
+
+app.post("/lists", authMiddleware, async (req, res) => {
+    const list = await List.create({
+        name: req.body.name,
+        members: []
+    });
+
+    res.json(list);
+});
+
+app.delete("/lists/:id", authMiddleware, async (req, res) => {
+    await List.findByIdAndDelete(req.params.id);
+    res.sendStatus(200);
+});
+
+// ================= INVITE USER =================
+
+app.post("/lists/:id/add-user", authMiddleware, async (req, res) => {
+    const { userEmail } = req.body;
+
+    const user = await User.findOne({ email: userEmail });
+    if (!user) return res.status(404).send("User not found");
+
+    const list = await List.findByIdAndUpdate(
+        req.params.id,
+        { $addToSet: { members: user._id } },
+        { new: true }
+    );
+
+    if (!list) return res.status(404).send("List not found");
+
+    io.to(user._id.toString()).emit("new-list", list);
+    io.to(req.params.id).emit("list-updated", list);
+
+    res.json(list);
+});
+
+// ================= ITEMS =================
+
+app.get("/items/:listId", authMiddleware, async (req, res) => {
+    const items = await Item.find({ listId: req.params.listId });
     res.json(items);
 });
 
-app.post("/items", (req, res) => {
-    items.push(req.body.name);
-    res.send("OK");
+app.post("/items", authMiddleware, async (req, res) => {
+    const item = await Item.create(req.body);
+
+    io.to(req.body.listId).emit("new-item", item);
+
+    res.json(item);
 });
 
-app.listen(3000, () => console.log("Backend 3000"));
+app.delete("/items/:id", authMiddleware, async (req, res) => {
+    await Item.findByIdAndDelete(req.params.id);
+    res.sendStatus(200);
+});
+
+// ================= START =================
+
+mongoose.connect("mongodb://mongo:27017/buybuddy");
+
+server.listen(3000, () => {
+    console.log("Backend running on 3000");
+});
