@@ -49,6 +49,14 @@ function App() {
         })
             .then(() => {
                 alert("Account created");
+
+                setName("");
+                setEmail("");
+                setPassword("");
+
+                setRegisterMessage("");
+                setLoginMessage("");
+
                 setView("home");
             })
             .catch(err => setRegisterMessage(err.response?.data));
@@ -66,6 +74,13 @@ function App() {
                 localStorage.setItem("token", res.data.token);
 
                 socket.emit("join-user", res.data.user._id);
+
+                setName("");
+                setEmail("");
+                setPassword("");
+
+                setLoginMessage("");
+                setRegisterMessage("");
 
                 setView("app");
             })
@@ -191,8 +206,8 @@ function App() {
             <div className="auth-center">
                 <h1 className="logo">BuyBuddy</h1>
 
-                <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
-                <input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)} />
+                <input placeholder="Email" required onChange={e => setEmail(e.target.value)} />
+                <input placeholder="Password" type="password" required onChange={e => setPassword(e.target.value)} />
 
                 <button onClick={login}>Login</button>
                 <button
@@ -216,9 +231,9 @@ function App() {
             <div className="auth-center">
                 <h1 className="logo">BuyBuddy</h1>
 
-                <input placeholder="Name" onChange={e => setName(e.target.value)} />
-                <input placeholder="E-mail" onChange={e => setEmail(e.target.value)} />
-                <input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)} />
+                <input placeholder="Name" required onChange={e => setName(e.target.value)}/>
+                <input placeholder="E-mail" required onChange={e => setEmail(e.target.value)}/>
+                <input placeholder="Password" required type="password" onChange={e => setPassword(e.target.value)}/>
 
                 <button onClick={register}>Create</button>
                 <button

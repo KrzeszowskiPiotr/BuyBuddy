@@ -40,6 +40,10 @@ io.on("connection", (socket) => {
 app.post("/auth/register", async (req, res) => {
     const { name, email, password } = req.body;
 
+    if (!name || !email || !password) {
+        return res.status(400).send("All fields are required");
+    }
+
     const existsEmail = await User.findOne({ email });
     if (existsEmail) return res.status(400).send("User already exists");
 
@@ -53,6 +57,10 @@ app.post("/auth/register", async (req, res) => {
 
 app.post("/auth/login", async (req, res) => {
     const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).send("All fields are required");
+    }
 
     const user = await User.findOne({ email });
     if (!user) return res.status(404).send("User not found");
