@@ -16,7 +16,8 @@ function App() {
     const [token, setToken] = useState(localStorage.getItem("token") || "");
     const [user, setUser] = useState<any>(null);
 
-    const [message, setMessage] = useState("");
+    const [loginMessage, setLoginMessage] = useState("");
+    const [registerMessage, setRegisterMessage] = useState("");
 
     const [lists, setLists] = useState<any[]>([]);
     const [selectedList, setSelectedList] = useState<any>(null);
@@ -50,7 +51,7 @@ function App() {
                 alert("Account created");
                 setView("home");
             })
-            .catch(err => setMessage(err.response?.data));
+            .catch(err => setRegisterMessage(err.response?.data));
     };
 
     const login = () => {
@@ -68,7 +69,7 @@ function App() {
 
                 setView("app");
             })
-            .catch(err => setMessage(err.response?.data));
+            .catch(err => setLoginMessage(err.response?.data));
     };
 
     const logout = () => {
@@ -185,9 +186,18 @@ function App() {
                 <input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)} />
 
                 <button onClick={login}>Login</button>
-                <button className="secondary" onClick={() => setView("home")}>Back</button>
+                <button
+                    className="secondary"
+                    onClick={() => {
+                        setLoginMessage("");
+                        setRegisterMessage("");
+                        setView("home");
+                    }}
+                >
+                    Back
+                </button>
 
-                <p>{message}</p>
+                <p>{loginMessage}</p>
             </div>
         );
     }
@@ -202,9 +212,18 @@ function App() {
                 <input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)} />
 
                 <button onClick={register}>Create</button>
-                <button className="secondary" onClick={() => setView("home")}>Back</button>
+                <button
+                    className="secondary"
+                    onClick={() => {
+                        setLoginMessage("");
+                        setRegisterMessage("");
+                        setView("home");
+                    }}
+                >
+                    Back
+                </button>
 
-                <p>{message}</p>
+                <p>{registerMessage}</p>
             </div>
         );
     }
