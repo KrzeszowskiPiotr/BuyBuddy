@@ -44,6 +44,21 @@ app.post("/auth/register", async (req, res) => {
         return res.status(400).send("All fields are required");
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+        return res.status(400).send("Invalid email format");
+    }
+
+    const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+        return res.status(400).send(
+            "Password must be at least 8 chars, include upper, lower, number and special char"
+        );
+    }
+
     const existsEmail = await User.findOne({ email });
     if (existsEmail) return res.status(400).send("User already exists");
 
