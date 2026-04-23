@@ -84,7 +84,9 @@ function App() {
 
                 setView("app");
             })
-            .catch(err => setLoginMessage(err.response?.data));
+            .catch(err => {
+                setLoginMessage(err.response?.data)
+            });
     };
 
     const logout = () => {
@@ -153,7 +155,11 @@ function App() {
         axios.post("http://localhost:3000/items",
             { name: itemName, listId: selectedList._id },
             { headers }
-        ).then(() => setItemName(""));
+        ).then(() => {
+            setItemName("")
+        }).catch(err => {
+            alert(err.response?.data);
+        });
     };
 
     const deleteItem = (id: string) => {

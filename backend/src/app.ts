@@ -144,6 +144,11 @@ app.get("/items/:listId", authMiddleware, async (req, res) => {
 });
 
 app.post("/items", authMiddleware, async (req, res) => {
+    const name = req.body.name?.trim();
+    if (!name) {
+        return res.status(400).send("Item name is required");
+    }
+
     const item = await Item.create(req.body);
 
     io.to(req.body.listId).emit("new-item", item);
