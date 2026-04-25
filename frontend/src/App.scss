@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
@@ -84,12 +87,13 @@ button {
 .main{
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
   section{
-    background-color: white;
+    background-color: #ffffff;
+    border-right: 1px solid #E5E7EB;
     width: 20vw;
     height: 100vh;
     display: flex;
@@ -108,30 +112,95 @@ button {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
   .creating-list{
-    background-color: white;
-    padding: 10px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #E5E7EB;
     display: flex;
     width: 100%;
-    height:10vh;
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: wrap;
   }
   .lists-display {
     width: 100%;
-    height: 90vh;
+    flex:1;
     display: flex;
     flex-direction: column;
     justify-content: start;
-    .list-card{
-      border: 1px solid #D1D5DB;
-      background-color: red;
-      width: 100%;
-      height: auto;
+    overflow-y:auto ;
+    .additem-button{
+      width: 6vw;
+      background-color: #4E8655;
+      color: white;
+      }
+    button{
+      width: 4.5vh;
+      height:4.5vh;
+      background-color: #4E8655;
+      align-self: flex-end;
+      margin: auto;
     }
+    .deletebutton{
+      position: static;
+      right: 4.5vh;
+      background-color: #ef4444;
+    }
+    .deletebutton:hover {
+      background-color: #dc2626;
+    }
+    .list-card {
+      background-color: #ffffff;
+      border: 1px solid #E5E7EB;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 10px;
+    }
+    .items{
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      padding: 10px;
+    }
+
+    .name-owner{
+      display: flex;
+      text-align: justify;
+      flex-wrap: wrap;
+      flex-direction: column;
+      margin-left: 7px;
+    }
+  }
+  .list-header{
+    display: flex;
+    flex-direction: row;
+    color: #1F2937;
+  }
+  .list-header:hover {
+    background-color: #F3F4F6;
+  }
+  small {
+    color: #6B7280;
+  }
+  input {
+    background-color: #ffffff;
+    border: 1px solid #D1D5DB;
+  }
+  .items input{
+    flex: 1;
+  }
+  input:focus {
+    outline: none;
+    border-color: #4E8655;
+    box-shadow: 0 0 0 3px rgba(78,134,85,0.15);
+  }
+  .item{
+    justify-content: space-between;
+    padding: 6px 10px;
   }
 
 }
+
 

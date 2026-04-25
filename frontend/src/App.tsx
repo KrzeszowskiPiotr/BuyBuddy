@@ -166,7 +166,16 @@ function App() {
         axios.delete(`http://localhost:3000/items/${id}`, { headers })
             .then(() => setItems(prev => prev.filter(i => i._id !== id)));
     };
-
+    const crossItem=(id:string) => {
+        const item=document.getElementById(`item-${id}`);
+        if(!item) return;
+        if(item.style.textDecoration === "line-through"){
+            item.style.textDecoration = "none";
+        }
+        else{
+            item.style.textDecoration = "line-through";
+        }
+    }
     // ================= SOCKET =================
 
     useEffect(() => {
@@ -283,8 +292,8 @@ function App() {
                                     className="list-header"
                                     onClick={() => selectList(list)}
                                 >
-                                    <div>
-                                        <span>{list.name}</span>
+                                    <div className="name-owner">
+                                        <span>{list.name}</span><br/>
                                         <small> owner: {list.owner?.name}</small>
                                     </div>
 
@@ -293,23 +302,30 @@ function App() {
                                             e.stopPropagation();
                                             deleteList(list._id);
                                         }}
-                                    >
-                                        ✕
-                                    </button>
+                                    >✕</button>
                                 </div>
-
                                 {isOpen && (
-                                    <div className="items">
+                                    <div>
+                                        <div className="items">
 
-                                        <input
-                                            type="text"
-                                            placeholder="New item name"
-                                            value={itemName}
-                                            onChange={(e) => setItemName(e.target.value)}
-                                        />
+                                            <input
+                                                type="text"
+                                                placeholder="New item name"
+                                                value={itemName}
+                                                onChange={(e) => setItemName(e.target.value)}
+                                            />
 
-                                        <button onClick={addItem}>Add</button>
+                                            <button onClick={addItem} className="additem-button">Add</button>
 
+                                        </div>
+
+                                        {items.map((item) => (
+                                            <div key={item._id} className="item">
+                                                <span id={`item-${item._id}`}>{item.name}</span>
+                                                <button onClick={() => deleteItem(item._id)} className="deletebutton">x</button>
+                                                <button onClick={()=>crossItem(item._id)}>v</button>
+                                            </div>
+                                        ))}
                                     </div>
                                 )}
 
