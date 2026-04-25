@@ -1,190 +1,137 @@
-$bg: #0b0f14;
-$card: rgba(255,255,255,0.06);
-$header: rgba(255,255,255,0.08);
-$text: #eaeaea;
-$accent: #7c5cff;
-
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
-  background: $bg;
-  color: $text;
+  background-color: #F9F6F5;
 }
-
-/* ================= AUTH ================= */
-
-.auth-center {
-  text-align: center;
-  margin-top: 120px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-
-.logo {
-  font-size: 50px;
-  background: linear-gradient(90deg, $accent, #00d4ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.auth-box {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 260px;
-}
-
-.auth-center input {
-  width: 260px;
-}
-
-/* ================= INPUTS ================= */
-
-input {
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(0,0,0,0.3);
-  color: $text;
-  outline: none;
-  transition: 0.2s;
-
-  &:focus {
-    border-color: $accent;
-    box-shadow: 0 0 8px rgba(124,92,255,0.4);
-  }
-}
-
-/* ================= BUTTONS ================= */
-
 button {
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: none;
-  background: $accent;
-  color: white;
-  cursor: pointer;
-  transition: 0.2s;
-  font-weight: 500;
+  border:solid 1px;
+  border-radius: 3px;
+  width: 21vw;
+  height: 5vh;
+}
+.auth-center{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100vw;
+  .logo{
+    width: 100vw;
+    height: 15vh;
+    justify-content: start;
+    margin-left: 2vh;
+  }
+  h3{
+    margin-bottom: 4vh;
+  }
+  .login {
+    background-color: #4E8655;
+    color: white;
+    border: #4E8655 solid 1px;
+    margin-bottom: 2.4vh;
+  }
 
-  &:hover {
-    transform: translateY(-1px);
-    opacity: 0.9;
+  .login:hover {
+    background-color: #37533b;
+  }
+
+  .register {
+    background-color: #FAFBFA;
+    color: #4E8655;
+    border: #4E8655 solid 1px;
+  }
+
+  .register:hover {
+    background-color: #cceccc;
+  }
+
+  .login-register-error{
+    text-align: center;
+    width:100vw;
   }
 }
-
-button.secondary {
-  background: #222;
-}
-
-/* ================= HEADER ================= */
-.logo-box{
-  width: 100%;
+.auth-box {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
-
-.logo-header {
-  width: auto;
-  font-size: 32px;
-  margin-top: 10px;
-  font-weight: bold;
-
-  background: linear-gradient(90deg, $accent, #00d4ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* TOPBAR */
-.topbar {
+.login-register-box{
   display: flex;
-  justify-content: space-between; /* LEFT + RIGHT */
+  justify-content: center;
   align-items: center;
-  padding: 15px;
-  margin: 10px;
-  background: $header;
-  border-radius: 12px;
-}
+  flex-direction: column;
+  background-color: #FEFDFE;
+  width: 30vw;
+  height: 65vh;
+  border-radius: 4px;
+  input {
+    height: 4vh;
+    width: 21vw;
+    margin-bottom: 16px;
+    border-radius: 3px;
+    border: 1px solid #D1D5DB;
 
-/* grupa LEFT */
-.topbar-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* ================= LAYOUT ================= */
-
-.layout {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  gap: 15px;
-  padding: 10px;
-}
-
-/* ================= PANELS ================= */
-
-.panel {
-  background: $card;
-  padding: 18px;
-  border-radius: 14px;
-}
-
-/* ================= LIST ITEMS ================= */
-
-.item {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px;
-  margin-top: 6px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s;
-
-  &:hover {
-    transform: translateX(2px);
-    background: rgba(255,255,255,0.1);
+    transition: all 0.2s ease;
+  }
+  input:focus {
+    outline: none;
+    border-color: #4E8655;
+    box-shadow: 0 0 0 3px rgba(78,134,85,0.15);
   }
 }
 
-.list-name{
+.main{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  section{
+    background-color: white;
+    width: 20vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    .logout {
+      margin-top: auto;
+      align-self: flex-start;
+      margin-bottom:10px;
+    }
+    button{
+      width: 97%;
+    }
+  }
+  aside{
+    width: 80vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .creating-list{
+    background-color: white;
+    padding: 10px;
+    display: flex;
+    width: 100%;
+    height:10vh;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .lists-display {
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    .list-card{
+      border: 1px solid #D1D5DB;
+      background-color: red;
+      width: 100%;
+      height: auto;
+    }
+  }
+
 }
 
-.active {
-  background: rgba(124,92,255,0.25);
-}
-
-/* ================= PANEL FORMS ================= */
-.panel-form{
-  display: flex;
-  justify-content: space-between;
-}
-
-.panel-form input {
-  margin-bottom: 12px;
-  margin-right: 10px;
-  width: 100%;
-}
-
-.panel-form button {
-  margin-bottom: 12px;
-}
-
-/* ================= DISPLAYING ================= */
-
-.panel.center,
-.panel.right {
-  display: none;
-}
-
-body.list-selected .panel.center,
-body.list-selected .panel.right {
-  display: block;
-}

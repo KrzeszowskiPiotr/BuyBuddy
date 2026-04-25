@@ -1,8 +1,12 @@
+version: "3.9"
+
 services:
   mongo:
     image: mongo
     ports:
       - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
 
   backend:
     build: ./backend
@@ -10,6 +14,11 @@ services:
       - "3000:3000"
     depends_on:
       - mongo
+    environment:
+      MONGO_URL: mongodb://mongo:27017/test
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
 
   frontend:
     build: ./frontend
@@ -17,3 +26,12 @@ services:
       - "3001:3000"
     depends_on:
       - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+
+volumes:
+  mongo_data:

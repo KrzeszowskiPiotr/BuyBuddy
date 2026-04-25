@@ -203,12 +203,12 @@ function App() {
         return (
             <div className="auth-center">
                 <h1 className="logo">BuyBuddy</h1>
-
                 <div className="auth-box">
-                    <button onClick={() => setView("login")}>Login</button>
-                    <button className="secondary" onClick={() => setView("register")}>Register</button>
+                    <h2>Plan, share and manage your groceries together</h2>
+                    <h3>Fast, simple shopping lists for everyday use</h3>
+                    <button className="login" onClick={() => setView("login")}>Login</button>
+                    <button className="register" onClick={() => setView("register")}>Register</button>
                 </div>
-
             </div>
         );
     }
@@ -217,23 +217,20 @@ function App() {
         return (
             <div className="auth-center">
                 <h1 className="logo">BuyBuddy</h1>
-
-                <input placeholder="Email" required onChange={e => setEmail(e.target.value)} />
-                <input placeholder="Password" type="password" required onChange={e => setPassword(e.target.value)} />
-
-                <button onClick={login}>Login</button>
-                <button
-                    className="secondary"
-                    onClick={() => {
+                <div className="login-register-box">
+                    <h3>Login</h3>
+                    <input placeholder="Email" required onChange={e => setEmail(e.target.value)} />
+                    <input placeholder="Password" type="password" required onChange={e => setPassword(e.target.value)} />
+                    <button onClick={login} className="login">Login</button>
+                    <button className="register" onClick={() => {
                         setLoginMessage("");
                         setRegisterMessage("");
                         setView("home");
                     }}
-                >
-                    Back
-                </button>
-
-                <p>{loginMessage}</p>
+                >Back</button>
+                    <p>Don't have an account? <span onClick={() => setView("register")} style={{ cursor: "pointer", color: "blue" }}>Sign up</span></p>
+                <p className="login-register-error">{loginMessage}</p>
+            </div>
             </div>
         );
     }
@@ -242,130 +239,87 @@ function App() {
         return (
             <div className="auth-center">
                 <h1 className="logo">BuyBuddy</h1>
-
-                <input placeholder="Name" required onChange={e => setName(e.target.value)}/>
-                <input placeholder="E-mail" required onChange={e => setEmail(e.target.value)}/>
-                <input placeholder="Password" required type="password" onChange={e => setPassword(e.target.value)}/>
-
-                <button onClick={register}>Create</button>
-                <button
-                    className="secondary"
+                <div className="login-register-box">
+                    <h3>Register</h3>
+                    <input placeholder="Name" className="form" onChange={e => setName(e.target.value)}/>
+                    <input placeholder="E-mail" className="form" required onChange={e => setEmail(e.target.value)}/>
+                    <input placeholder="Password" className="form" type="password" onChange={e => setPassword(e.target.value)}/>
+                    <button onClick={register} className="login">Create</button>
+                    <button
+                    className="register"
                     onClick={() => {
                         setLoginMessage("");
                         setRegisterMessage("");
                         setView("home");
                     }}
-                >
-                    Back
-                </button>
-
-                <p>{registerMessage}</p>
+                    >Back</button>
+                    <p>Already have an account? <span onClick={() => setView("login")} style={{ cursor: "pointer", color: "blue" }}>Log in</span></p>
+                    <p className="login-register-error">{registerMessage}</p>
+                </div>
             </div>
         );
     }
-
     return (
-        <div className="app">
-            <div className="logo-box">
-                <h1 className="logo-header">BuyBuddy</h1>
-            </div>
-            <div className="topbar">
-                <div className="topbar-left">
-                    Logged as <b>{user?.name}</b>
+        <div className="main">
+            <section>
+                <h1>BuyBuddy</h1>
+                <p>Logged as <b>{user?.name}</b></p>
+                <button onClick={logout} className="logout">Logout</button>
+            </section>
+
+            <aside>
+                <div className="creating-list">
+                    <input type="text" placeholder="New list name" value={listName} onChange={e => setListName(e.target.value)} />
+                    <button onClick={createList}>Create List</button>
                 </div>
+                <div className="lists-display">
+                    {lists.map((list) => {
+                        const isOpen = selectedList?._id === list._id;
 
-                <button onClick={logout}>Logout</button>
-            </div>
+                        return (
+                            <div key={list._id} className="list-card">
 
-            <div className="layout">
+                                <div
+                                    className="list-header"
+                                    onClick={() => selectList(list)}
+                                >
+                                    <div>
+                                        <span>{list.name}</span>
+                                        <small> owner: {list.owner?.name}</small>
+                                    </div>
 
-                <div className="panel left">
-                    <h3>Lists</h3>
-                    <div className="panel-form">
-                        <input
-                            placeholder="New list"
-                            value={listName}
-                            onChange={e => setListName(e.target.value)}
-                        />
-
-                        <button onClick={createList}>Create</button>
-                    </div>
-
-
-                    {lists.map(l => (
-                        <div
-                            key={l._id}
-                            className={`item ${selectedList?._id === l._id ? "active" : ""}`}
-                            onClick={() => selectList(l)}
-                        >
-                            <div  className="list-name">
-                                <span>{l.name}</span>
-
-                                {l.owner?._id !== user?._id && (
-                                    <small>by {l.owner?.name}</small>
-                                )}
-                            </div>
-
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    deleteList(l._id);
-                                }}
-                            >
-                                ✕
-                            </button>
-                        </div>
-                    ))}
-                </div>
-
-                <div className="panel center">
-                    {selectedList ? (
-                        <>
-                            <h3>Items</h3>
-
-                            <div className="panel-form">
-                                <input
-                                    placeholder="New item"
-                                    value={itemName}
-                                    onChange={e => setItemName(e.target.value)}
-                                />
-
-                                <button onClick={addItem}>Add</button>
-                            </div>
-
-                            {items.map(i => (
-                                <div key={i._id} className="item">
-                                    {i.name}
-                                    <button onClick={() => deleteItem(i._id)}>✕</button>
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            deleteList(list._id);
+                                        }}
+                                    >
+                                        ✕
+                                    </button>
                                 </div>
-                            ))}
-                        </>
-                    ) : (
-                        <p>Select a list</p>
-                    )}
-                </div>
 
-                <div className="panel right">
-                    {selectedList && (
-                        <>
-                            <h3>Invite user</h3>
+                                {isOpen && (
+                                    <div className="items">
 
-                            <div className="panel-form">
-                                <input
-                                    placeholder="E-mail"
-                                    value={inviteEmail}
-                                    onChange={e => setInviteEmail(e.target.value)}
-                                />
+                                        <input
+                                            type="text"
+                                            placeholder="New item name"
+                                            value={itemName}
+                                            onChange={(e) => setItemName(e.target.value)}
+                                        />
 
-                                <button onClick={addUserToList}>Invite</button>
+                                        <button onClick={addItem}>Add</button>
+
+                                    </div>
+                                )}
+
                             </div>
-
-                        </>
-                    )}
+                        );
+                    })}
                 </div>
-
-            </div>
+            </aside>
         </div>
+
     );
 }
 
