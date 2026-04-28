@@ -1,3 +1,4 @@
+
 * {
   box-sizing: border-box;
 
@@ -331,3 +332,90 @@ button {
   background-color: #F9FAFB;
 }
 
+@media (max-width: 768px) {
+  button {
+    width: 100%;
+    height: 5vh;
+  }
+
+  .auth-center {
+    gap: 20px;
+    padding: 10px;
+    .logo {
+      height: auto;
+      margin: 0;
+      text-align: center;
+    }
+
+    h2, h3 {
+      text-align: center;
+    }
+  }
+
+  .login-register-box{
+    width: 100%;
+    padding: 10px;
+  }
+
+  .auth-box {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .login-register-box input {
+    width: 100%;
+    height: 5vh;
+  }
+
+  .main {
+    flex-direction: column;
+    height: auto;
+    section {
+      width: 100%;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    aside {
+      width: 100%;
+      height: auto;
+    }
+    .creating-list {
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px;
+      input, button {
+        width: 100%;
+        margin: 0;
+        padding: 10px;
+      }
+    }
+    .lists-display {
+      padding: 10px;
+    }
+    .items {
+      flex-direction: column;
+      input, button {
+        width: 100%;
+        text-align: center;
+      }
+    }
+    .item {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .list-header {
+      flex-direction: row;
+    }
+
+  }
+  .invite-container {
+    width: 90%;
+    padding: 20px;
+
+    input, button {
+      width: 100%;
+    }
+  }
+}
