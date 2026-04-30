@@ -23,7 +23,6 @@ app.get("/", (req, res) => {
     res.send("API works");
 });
 
-// ================= SOCKET =================
 
 io.on("connection", (socket) => {
     socket.on("join-user", (userId) => {
@@ -35,7 +34,7 @@ io.on("connection", (socket) => {
     });
 });
 
-// ================= AUTH =================
+
 
 app.post("/auth/register", async (req, res) => {
     const { name, email, password } = req.body;
@@ -89,7 +88,7 @@ app.post("/auth/login", async (req, res) => {
     });
 });
 
-// ================= LISTS =================
+
 
 app.get("/lists", authMiddleware, async (req: any, res) => {
     const lists = await List.find({
@@ -129,7 +128,7 @@ app.delete("/lists/:id", authMiddleware, async (req, res) => {
     res.sendStatus(200);
 });
 
-// ================= INVITE USER =================
+
 
 app.post("/lists/:id/add-user", authMiddleware, async (req, res) => {
     const { userEmail } = req.body;
@@ -151,7 +150,6 @@ app.post("/lists/:id/add-user", authMiddleware, async (req, res) => {
     res.json(list);
 });
 
-// ================= ITEMS =================
 
 app.get("/items/:listId", authMiddleware, async (req, res) => {
     const items = await Item.find({ listId: req.params.listId });
@@ -181,7 +179,7 @@ app.delete("/items/:id", authMiddleware, async (req, res) => {
     res.sendStatus(200);
 });
 
-// ================= START =================
+
 
 mongoose.connect("mongodb://mongo:27017/buybuddy");
 

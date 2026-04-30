@@ -40,7 +40,6 @@ function App() {
         }
     }, [selectedList]);
 
-    // ================= AUTH =================
 
     const register = () => {
         axios.post("http://localhost:3000/auth/register", {
@@ -97,8 +96,6 @@ function App() {
         setView("home");
     };
 
-    // ================= LISTS =================
-
     const loadLists = () => {
         axios.get("http://localhost:3000/lists", { headers })
             .then(res => setLists(res.data));
@@ -150,7 +147,6 @@ function App() {
             });
     };
 
-    // ================= ITEMS =================
 
     const addItem = () => {
         axios.post("http://localhost:3000/items",
@@ -178,7 +174,6 @@ function App() {
 
         }
     }
-    // ================= SOCKET =================
 
     useEffect(() => {
         socket.on("new-item", (item) => {
@@ -208,7 +203,6 @@ function App() {
         if (token) loadLists();
     }, [token]);
 
-    // ================= UI =================
 
     if (view === "home") {
         return (
